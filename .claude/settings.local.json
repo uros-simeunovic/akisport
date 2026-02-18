@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun run build:*)",
+      "Bash(bunx next build:*)",
+      "Bash(where:*)",
+      "Bash(npm run build:*)"
+    ]
+  }
+}
