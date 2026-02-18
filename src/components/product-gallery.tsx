@@ -30,9 +30,9 @@ const dresoviImages = {
 }
 
 const trenerkeImages = [
-  { id: 1, src: "/trenerke/trenerka-1.jpg", title: "Trenerka teget" },
-  { id: 2, src: "/trenerke/trenerka-2.jpg", title: "Trenerka crno-narandžasta" },
-  { id: 3, src: "/trenerke/trenerka-3.jpg", title: "Trenerka crvena" },
+  { id: 1, src: "/trenerke/trenerka-1.png", title: "Trenerka teget" },
+  { id: 2, src: "/trenerke/trenerka-2.png", title: "Trenerka crno-narandžasta" },
+  { id: 3, src: "/trenerke/trenerka-3.png", title: "Trenerka crvena" },
   { id: 4, src: "/trenerke/trenerka-4.jpg", title: "Trenerka siva" },
 ]
 
