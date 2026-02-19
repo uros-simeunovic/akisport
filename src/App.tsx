@@ -10,7 +10,7 @@ export default function App() {
       <Header />
 
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center">
+      <section className="relative min-h-svh flex items-center">
         <img
           src="/LandingPageImage.png"
           alt="AKI Sport"

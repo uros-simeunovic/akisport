@@ -301,7 +301,7 @@ export function ProductGallery() {
       {/* Sticky category nav */}
       <div className="sticky top-16 z-40 bg-[oklch(0.08_0_0)] border-b border-[oklch(0.22_0_0)]">
         <div className="container mx-auto px-8 md:px-16">
-          <div className="flex gap-8 overflow-x-auto scrollbar-none">
+          <div className="flex gap-8">
             {stickyCategoryLinks.map((link) => (
               <a
                 key={link.href}
