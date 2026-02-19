@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
 import { ProductGallery } from "@/components/product-gallery"
 import { ContactSection } from "@/components/contact-section"
@@ -5,12 +6,21 @@ import { Footer } from "@/components/footer"
 import { ShieldCheck, Users, Zap } from "lucide-react"
 
 export default function App() {
+  const [heroHeight, setHeroHeight] = useState<number | null>(null)
+
+  useEffect(() => {
+    setHeroHeight(window.innerHeight)
+  }, [])
+
   return (
     <main className="min-h-screen bg-background">
       <Header />
 
       {/* Hero */}
-      <section className="relative min-h-svh flex items-center">
+      <section
+        className="relative flex items-center"
+        style={{ minHeight: heroHeight ? `${heroHeight}px` : "100vh" }}
+      >
         <img
           src="/LandingPageImage.png"
           alt="AKI Sport"
