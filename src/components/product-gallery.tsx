@@ -103,18 +103,18 @@ function Lightbox({
 
       <button
         onClick={(e) => { e.stopPropagation(); onPrev() }}
-        className="absolute left-4 p-2 text-white/70 hover:text-white transition-colors z-10"
+        className="absolute left-4 flex items-center justify-center w-12 h-12 bg-black/60 hover:bg-black text-white rounded-full transition-all cursor-pointer z-10"
         aria-label="Prethodna slika"
       >
-        <ChevronLeft className="w-10 h-10" />
+        <ChevronLeft className="w-7 h-7" />
       </button>
 
       <button
         onClick={(e) => { e.stopPropagation(); onNext() }}
-        className="absolute right-4 p-2 text-white/70 hover:text-white transition-colors z-10"
+        className="absolute right-4 flex items-center justify-center w-12 h-12 bg-black/60 hover:bg-black text-white rounded-full transition-all cursor-pointer z-10"
         aria-label="Sledeća slika"
       >
-        <ChevronRight className="w-10 h-10" />
+        <ChevronRight className="w-7 h-7" />
       </button>
 
       <div

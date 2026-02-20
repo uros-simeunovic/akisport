@@ -3,6 +3,7 @@ import { Header } from "@/components/header"
 import { ProductGallery } from "@/components/product-gallery"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
+import { SizeChart } from "@/components/size-chart"
 import { ShieldCheck, Users, Zap } from "lucide-react"
 
 export default function App() {
@@ -86,6 +87,9 @@ export default function App() {
 
       {/* Product Gallery */}
       <ProductGallery />
+
+      {/* Mere & Materijali */}
+      <SizeChart />
 
       {/* Zašto mi? strip */}
       <section className="bg-[oklch(0.08_0_0)] bg-diagonal-stripes py-20">
