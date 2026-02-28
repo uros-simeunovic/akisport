@@ -10,10 +10,11 @@ const dresoviCategories = [
 
 const dresoviImages = {
   fudbal: [
-    { id: 1, src: "/dresovi/fudbal/fudbal-dres-1.jpg", title: "Fudbalski dres crveno-beli" },
-    { id: 2, src: "/dresovi/fudbal/fudbal-dres-2.jpg", title: "Fudbalski dres plavi" },
-    { id: 3, src: "/dresovi/fudbal/fudbal-dres-3.jpg", title: "Fudbalski dres crno-zlatni" },
-    { id: 4, src: "/dresovi/fudbal/fudbal-dres-4.jpg", title: "Fudbalski dres zeleno-beli" },
+    { id: 1, src: "/dresovi/fudbal/fudbal-dres-1.png", title: "Fudbalski dres crveno-beli" },
+    { id: 2, src: "/dresovi/fudbal/fudbal-dres-2.png", title: "Fudbalski dres plavi" },
+    { id: 3, src: "/dresovi/fudbal/fudbal-dres-3.png", title: "Fudbalski dres crno-zlatni" },
+    { id: 4, src: "/dresovi/fudbal/fudbal-dres-4.png", title: "Fudbalski dres zeleno-beli" },
+    { id: 5, src: "/dresovi/fudbal/fudbal-dres-5.png", title: "Fudbalski dres crveno-plavi" },
   ],
   kosarka: [
     { id: 1, src: "/dresovi/kosarka/kosarka-dres-1.jpg", title: "Košarkaški dres crveni" },

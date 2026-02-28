@@ -117,39 +117,39 @@ const sizeData: Record<
 
 const materials = [
   {
-    name: "Dry-Fit Polyester",
+    name: "Interlok Jersey",
     description:
-      "Lagani, prozračni materijal koji brzo odvodi vlagu sa kože. Idealan za dresove i majice tokom intenzivnih treninga.",
-    composition: "100% Polyester",
+      "Glatki, elastični materijal sa dvostrukim pletivom koji dobro pada i drži formu posle pranja. Koristi se za premijum dresove.",
+    composition: "100% Poliester",
     weight: "140 g/m²",
   },
   {
-    name: "Micro-Mesh",
+    name: "Mokra Likra 250",
     description:
-      "Mrežasta struktura za maksimalnu ventilaciju. Koristi se na bočnim panelima dresova i šorcevima za dodatnu prozračnost.",
-    composition: "100% Polyester",
-    weight: "120 g/m²",
+      "Elastični materijal brušen sa naličja, izuzetno udoban za nošenje. Koristi se za izradu trenerki.",
+    composition: "90% Poliester / 10% Likra",
+    weight: "250 g/m²",
   },
   {
-    name: "Brushed Fleece",
+    name: "Mokra Likra 180",
     description:
-      "Mekana unutrašnjost sa četkanom strukturom za toplu i udobnu postavu. Savršen za trenerke u hladnijim uslovima.",
-    composition: "80% Polyester / 20% Pamuk",
-    weight: "280 g/m²",
+      "Elastični materijal idealan za sportsku odeću koja zahteva slobodu pokreta. Koristi se za izradu dresova za atletiku i odbojku.",
+    composition: "90% Poliester / 10% Likra",
+    weight: "180 g/m²",
   },
   {
-    name: "Interlock Jersey",
+    name: "Rupičasti Materijal (Saće)",
     description:
-      "Glatki, elastični materijal sa dvostrukim pletivom koji odlično drži formu nakon pranja. Koristi se za premium dresove.",
-    composition: "92% Polyester / 8% Elastan",
-    weight: "160 g/m²",
+      "Materijal sa mrežastom strukturom za maksimalnu ventilaciju i prozračnost. Koristi se za košarkaške dresove.",
+    composition: "100% Poliester",
+    weight: "140 g/m²",
   },
   {
-    name: "Taslon",
+    name: "Pamučni Materijal (Penја)",
     description:
-      "Lagan i izdržljiv materijal otporan na habanje. Idealan za šorceve i spoljašnjost trenerki — brzo se suši i ne gužva se.",
-    composition: "100% Polyester",
-    weight: "170 g/m²",
+      "Prirodni pamučni materijal prijatan za kožu, idealan za svakodnevno nošenje. Koristi se za izradu majica.",
+    composition: "100% Pamuk",
+    weight: "150 g/m²",
   },
 ]
 

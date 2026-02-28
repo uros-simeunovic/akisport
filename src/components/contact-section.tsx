@@ -16,7 +16,7 @@ export function ContactSection() {
             <Phone className="w-5 h-5 text-[oklch(0.7_0.18_45)] mt-0.5 shrink-0" />
             <div>
               <p className="text-xs uppercase tracking-widest text-white/40 mb-1">Telefon</p>
-              <p className="text-white">+381 XX XXX XXXX</p>
+              <p className="text-white">+381 64 400 4772</p>
             </div>
           </div>
           <div className="flex items-start gap-4">
