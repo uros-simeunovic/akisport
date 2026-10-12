@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Reveal } from "@/components/reveal"
 
 const dresoviCategories = [
   { id: "fudbal", label: "Fudbalski" },
@@ -52,10 +53,10 @@ const sorceviImages = [
 ]
 
 const stickyCategoryLinks = [
-  { href: "#dresovi", label: "DRESOVI" },
-  { href: "#trenerke", label: "TRENERKE" },
-  { href: "#majice", label: "MAJICE" },
-  { href: "#sorcevi", label: "ŠORCEVI" },
+  { href: "#dresovi", label: "Dresovi" },
+  { href: "#trenerke", label: "Trenerke" },
+  { href: "#majice", label: "Majice" },
+  { href: "#sorcevi", label: "Šorcevi" },
 ]
 
 type ImageItem = { id: number; src: string; title: string }
@@ -88,165 +89,180 @@ function Lightbox({
   }, [onClose, onPrev, onNext])
 
   const current = images[currentIndex]
+  const navButton =
+    "absolute z-10 flex size-12 cursor-pointer items-center justify-center border border-foreground/15 bg-deep/80 text-foreground transition-all duration-200 hover:border-accent hover:text-accent active:scale-95"
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-deep/95 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-label={current.title}
       onClick={onClose}
     >
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors z-10"
+        className="absolute right-4 top-4 z-10 flex size-12 items-center justify-center text-foreground/70 transition-colors hover:text-foreground"
         aria-label="Zatvori"
+        autoFocus
       >
-        <X className="w-8 h-8" />
+        <X className="size-7" />
       </button>
 
       <button
         onClick={(e) => { e.stopPropagation(); onPrev() }}
-        className="absolute left-4 flex items-center justify-center w-12 h-12 bg-black/60 hover:bg-black text-white rounded-full transition-all cursor-pointer z-10"
+        className={cn(navButton, "left-3 md:left-6")}
         aria-label="Prethodna slika"
       >
-        <ChevronLeft className="w-7 h-7" />
+        <ChevronLeft className="size-6" />
       </button>
 
       <button
         onClick={(e) => { e.stopPropagation(); onNext() }}
-        className="absolute right-4 flex items-center justify-center w-12 h-12 bg-black/60 hover:bg-black text-white rounded-full transition-all cursor-pointer z-10"
+        className={cn(navButton, "right-3 md:right-6")}
         aria-label="Sledeća slika"
       >
-        <ChevronRight className="w-7 h-7" />
+        <ChevronRight className="size-6" />
       </button>
 
-      <div
-        className="max-w-5xl max-h-[90vh] px-4"
+      <figure
+        className="max-h-[92vh] max-w-5xl px-4"
         onClick={(e) => e.stopPropagation()}
       >
         <img
           src={current.src || "/placeholder.svg"}
           alt={current.title}
-          className="max-w-full max-h-[80vh] object-contain mx-auto rounded-lg"
+          className="mx-auto max-h-[78vh] max-w-full object-contain"
         />
-        <p className="text-white text-center mt-4 text-lg font-medium">
-          {current.title}
-        </p>
-        <p className="text-white/60 text-center text-sm mt-1">
-          {currentIndex + 1} / {images.length}
-        </p>
-      </div>
+        <figcaption className="mt-5 flex items-baseline justify-center gap-4">
+          <span className="font-medium text-foreground">{current.title}</span>
+          <span className="label-mono tabular">
+            {currentIndex + 1} / {images.length}
+          </span>
+        </figcaption>
+      </figure>
     </div>
   )
 }
 
-function SectionHeading({ number, title }: { number: string; title: string }) {
+function useLightbox(count: number) {
+  const [open, setOpen] = useState(false)
+  const [index, setIndex] = useState(0)
+
+  return {
+    open,
+    index,
+    show: (i: number) => {
+      setIndex(i)
+      setOpen(true)
+    },
+    close: () => setOpen(false),
+    next: () => setIndex((prev) => (prev + 1) % count),
+    prev: () => setIndex((prev) => (prev - 1 + count) % count),
+  }
+}
+
+function SectionHeading({ number, title, count }: { number: string; title: string; count: number }) {
   return (
-    <div className="flex items-center gap-4 mb-10">
-      <span
-        className="text-sm font-black text-[oklch(0.7_0.18_45)] shrink-0"
-        style={{ fontFamily: "var(--font-barlow)" }}
-      >
-        {number}
+    <Reveal className="mb-10 flex items-end gap-5 md:mb-12">
+      <span className="label-mono tabular pb-2 md:pb-3">
+        <span className="text-accent">{number}</span>
       </span>
-      <div className="flex-1 h-px bg-[oklch(0.22_0_0)]" />
-      <h2
-        className="text-4xl md:text-5xl font-black uppercase tracking-wider text-white shrink-0"
-        style={{ fontFamily: "var(--font-barlow)" }}
-      >
-        {title}
-      </h2>
-    </div>
+      <h2 className="display text-[clamp(3rem,7vw,6rem)]">{title}</h2>
+      <div aria-hidden className="mb-3 hidden h-px flex-1 bg-border md:block" />
+      <span className="label-mono tabular ml-auto pb-2 md:ml-0 md:pb-3">{count} modela</span>
+    </Reveal>
   )
 }
 
 function ImageGrid({
   images,
   onImageClick,
+  aspect,
 }: {
   images: ImageItem[]
   onImageClick: (index: number) => void
+  aspect: string
 }) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+    <div className="grid grid-cols-2 gap-x-3 gap-y-8 md:grid-cols-3 md:gap-x-6 md:gap-y-12 lg:grid-cols-4">
       {images.map((item, index) => (
-        <button
-          key={item.id}
-          onClick={() => onImageClick(index)}
-          className="group relative aspect-[3/4] overflow-hidden bg-[oklch(0.12_0_0)] cursor-pointer hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/50 transition-all duration-300"
-        >
-          <img
-            src={item.src || "/placeholder.svg"}
-            alt={item.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-          {/* Orange tag slides up on hover */}
-          <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-            <div className="bg-[oklch(0.7_0.18_45)] px-3 py-2">
-              <p className="text-black text-xs font-black uppercase tracking-wide truncate">
+        <Reveal key={item.id} delay={(index % 4) * 70}>
+          <button
+            onClick={() => onImageClick(index)}
+            className="group block w-full cursor-pointer text-left"
+            aria-label={`Uvećaj sliku: ${item.title}`}
+          >
+            <span className={cn("relative block overflow-hidden border border-border bg-card transition-all duration-300 group-hover:-translate-y-1 group-hover:border-accent/60 group-hover:shadow-[0_18px_40px_-18px_oklch(0.72_0.16_48/0.35)] group-active:scale-[0.99]", aspect)}>
+              <img
+                src={item.src || "/placeholder.svg"}
+                alt={item.title}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              />
+            </span>
+            <span className="mt-3 flex items-baseline justify-between gap-3">
+              <span className="text-sm text-foreground/85 transition-colors group-hover:text-foreground">
                 {item.title}
-              </p>
-            </div>
-          </div>
-        </button>
+              </span>
+              <span className="label-mono tabular shrink-0">{String(index + 1).padStart(2, "0")}</span>
+            </span>
+          </button>
+        </Reveal>
       ))}
     </div>
   )
 }
 
+// Most mockups are square; the tracksuit set is 2:3 portrait.
+function Gallery({ images, aspect = "aspect-square" }: { images: ImageItem[]; aspect?: string }) {
+  const lb = useLightbox(images.length)
+
+  return (
+    <>
+      <ImageGrid images={images} onImageClick={lb.show} aspect={aspect} />
+      {lb.open && (
+        <Lightbox
+          images={images}
+          currentIndex={lb.index}
+          onClose={lb.close}
+          onPrev={lb.prev}
+          onNext={lb.next}
+        />
+      )}
+    </>
+  )
+}
+
 function DresoviSection() {
   const [activeSubcat, setActiveSubcat] = useState<"fudbal" | "kosarka" | "odbojka">("fudbal")
-  const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
-
   const currentImages = dresoviImages[activeSubcat]
-
-  const openLightbox = (index: number) => {
-    setCurrentImageIndex(index)
-    setLightboxOpen(true)
-  }
-
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % currentImages.length)
-  }
-
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + currentImages.length) % currentImages.length)
-  }
 
   return (
     <section id="dresovi" className="scroll-mt-36">
-      <SectionHeading number="01" title="DRESOVI" />
+      <SectionHeading number="01" title="Dresovi" count={currentImages.length} />
 
-      {/* Underline tabs */}
-      <div className="border-b border-[oklch(0.22_0_0)] mb-8">
-        <div className="flex gap-6">
-          {dresoviCategories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveSubcat(cat.id as "fudbal" | "kosarka" | "odbojka")}
-              className={cn(
-                "pb-3 text-sm font-medium tracking-wide border-b-2 -mb-px transition-colors",
-                activeSubcat === cat.id
-                  ? "border-[oklch(0.7_0.18_45)] text-white"
-                  : "border-transparent text-white/40 hover:text-white/70"
-              )}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
+      <div className="mb-10 flex flex-wrap gap-2" role="group" aria-label="Sport">
+        {dresoviCategories.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => setActiveSubcat(cat.id as "fudbal" | "kosarka" | "odbojka")}
+            aria-pressed={activeSubcat === cat.id}
+            className={cn(
+              "h-10 border px-4 text-sm transition-all duration-200 active:scale-[0.98]",
+              activeSubcat === cat.id
+                ? "border-accent bg-accent font-medium text-accent-foreground"
+                : "border-border text-foreground/70 hover:border-foreground/40 hover:text-foreground"
+            )}
+          >
+            {cat.label}
+          </button>
+        ))}
       </div>
 
-      <ImageGrid images={currentImages} onImageClick={openLightbox} />
-
-      {lightboxOpen && (
-        <Lightbox
-          images={currentImages}
-          currentIndex={currentImageIndex}
-          onClose={() => setLightboxOpen(false)}
-          onPrev={prevImage}
-          onNext={nextImage}
-        />
-      )}
+      {/* key resets the lightbox state when the sport changes */}
+      <Gallery key={activeSubcat} images={currentImages} />
     </section>
   )
 }
@@ -256,42 +272,18 @@ function SimpleGallerySection({
   title,
   images,
   number,
+  aspect,
 }: {
   id: string
   title: string
   images: ImageItem[]
   number: string
+  aspect?: string
 }) {
-  const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
-
-  const openLightbox = (index: number) => {
-    setCurrentImageIndex(index)
-    setLightboxOpen(true)
-  }
-
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % images.length)
-  }
-
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)
-  }
-
   return (
     <section id={id} className="scroll-mt-36">
-      <SectionHeading number={number} title={title} />
-      <ImageGrid images={images} onImageClick={openLightbox} />
-
-      {lightboxOpen && (
-        <Lightbox
-          images={images}
-          currentIndex={currentImageIndex}
-          onClose={() => setLightboxOpen(false)}
-          onPrev={prevImage}
-          onNext={nextImage}
-        />
-      )}
+      <SectionHeading number={number} title={title} count={images.length} />
+      <Gallery images={images} aspect={aspect} />
     </section>
   )
 }
@@ -299,29 +291,28 @@ function SimpleGallerySection({
 export function ProductGallery() {
   return (
     <div>
-      {/* Sticky category nav */}
-      <div className="sticky top-16 z-40 bg-[oklch(0.08_0_0)] border-b border-[oklch(0.22_0_0)]">
-        <div className="container mx-auto px-8 md:px-16">
-          <div className="flex gap-8">
+      {/* Sticky category nav. No horizontal scroll on purpose: four short labels fit on one row. */}
+      <div className="sticky top-16 z-40 border-b border-border bg-background/90 backdrop-blur-md">
+        <div className="gutter mx-auto max-w-[1440px]">
+          <nav aria-label="Kategorije kolekcije" className="flex justify-between md:justify-start md:gap-10">
             {stickyCategoryLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-xs tracking-widest uppercase text-white/50 hover:text-[oklch(0.7_0.18_45)] transition-colors py-3 border-b-2 border-transparent hover:border-[oklch(0.7_0.18_45)] -mb-px shrink-0"
+                className="-mb-px shrink-0 border-b-2 border-transparent py-3.5 text-[13px] text-foreground/65 transition-colors hover:border-accent hover:text-foreground"
               >
                 {link.label}
               </a>
             ))}
-          </div>
+          </nav>
         </div>
       </div>
 
-      {/* Product sections */}
-      <div className="container mx-auto px-8 md:px-16 py-16 space-y-20">
+      <div className="gutter mx-auto max-w-[1440px] space-y-28 py-24 md:space-y-40 md:py-36">
         <DresoviSection />
-        <SimpleGallerySection id="trenerke" title="TRENERKE" images={trenerkeImages} number="02" />
-        <SimpleGallerySection id="majice" title="MAJICE" images={majiceImages} number="03" />
-        <SimpleGallerySection id="sorcevi" title="ŠORCEVI" images={sorceviImages} number="04" />
+        <SimpleGallerySection id="trenerke" title="Trenerke" images={trenerkeImages} number="02" aspect="aspect-[2/3]" />
+        <SimpleGallerySection id="majice" title="Majice" images={majiceImages} number="03" />
+        <SimpleGallerySection id="sorcevi" title="Šorcevi" images={sorceviImages} number="04" />
       </div>
     </div>
   )

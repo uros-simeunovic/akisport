@@ -1,12 +1,12 @@
 import { useState } from "react"
-import { Ruler, Shirt, Layers } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Reveal } from "@/components/reveal"
 
 const sizeTabs = [
-  { id: "dresovi", label: "Dresovi", icon: Shirt },
-  { id: "trenerke", label: "Trenerke", icon: Shirt },
-  { id: "majice", label: "Majice", icon: Shirt },
-  { id: "sorcevi", label: "Šorcevi", icon: Shirt },
+  { id: "dresovi", label: "Dresovi" },
+  { id: "trenerke", label: "Trenerke" },
+  { id: "majice", label: "Majice" },
+  { id: "sorcevi", label: "Šorcevi" },
 ] as const
 
 type SizeTabId = (typeof sizeTabs)[number]["id"]
@@ -145,7 +145,7 @@ const materials = [
     weight: "140 g/m²",
   },
   {
-    name: "Pamučni Materijal (Penја)",
+    name: "Pamučni materijal (Penja)",
     description:
       "Prirodni pamučni materijal prijatan za kožu, idealan za svakodnevno nošenje. Koristi se za izradu majica.",
     composition: "100% Pamuk",
@@ -153,57 +153,44 @@ const materials = [
   },
 ]
 
+
 export function SizeChart() {
   const [activeTab, setActiveTab] = useState<SizeTabId>("dresovi")
   const [ageGroup, setAgeGroup] = useState<AgeGroup>("odrasli")
   const currentData = sizeData[activeTab][ageGroup]
 
   return (
-    <section id="mere" className="bg-[oklch(0.06_0_0)] py-20">
-      <div className="container mx-auto px-8 md:px-16">
-        {/* Heading */}
-        <div className="flex items-center gap-4 mb-14">
-          <Ruler className="w-6 h-6 text-[oklch(0.7_0.18_45)] shrink-0" />
-          <div className="flex-1 h-px bg-[oklch(0.22_0_0)]" />
-          <h2
-            className="text-4xl md:text-5xl font-black uppercase tracking-wider text-white shrink-0"
-            style={{ fontFamily: "var(--font-barlow)" }}
-          >
-            MERE & MATERIJALI
-          </h2>
-        </div>
+    <section id="mere" className="scroll-mt-16 bg-deep py-24 md:py-36">
+      <div className="gutter mx-auto max-w-[1440px]">
+        {/* === Size tables === */}
+        <Reveal className="mb-10 md:mb-14">
+          <p className="label-mono mb-5 flex items-center gap-3">
+            <span aria-hidden className="h-px w-8 bg-accent" />
+            Tabele veličina
+          </p>
+          <h2 className="display text-[clamp(2.75rem,6vw,5.5rem)]">Mere</h2>
+        </Reveal>
 
-        {/* === Size Tables === */}
-        <div className="mb-20">
-          <h3
-            className="text-xl font-black uppercase tracking-widest text-[oklch(0.7_0.18_45)] mb-8"
-            style={{ fontFamily: "var(--font-barlow)" }}
-          >
-            TABELE VELIČINA
-          </h3>
-
-          {/* Tabs */}
-          <div className="border-b border-[oklch(0.22_0_0)] mb-8">
-            <div className="flex gap-6">
-              {sizeTabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={cn(
-                    "pb-3 text-sm font-medium tracking-wide border-b-2 -mb-px transition-colors whitespace-nowrap",
-                    activeTab === tab.id
-                      ? "border-[oklch(0.7_0.18_45)] text-white"
-                      : "border-transparent text-white/40 hover:text-white/70"
-                  )}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
+        <div className="mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="-mx-1 flex flex-wrap gap-2" role="group" aria-label="Vrsta odeće">
+            {sizeTabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                aria-pressed={activeTab === tab.id}
+                className={cn(
+                  "mx-1 h-10 border px-4 text-sm transition-all duration-200 active:scale-[0.98]",
+                  activeTab === tab.id
+                    ? "border-accent bg-accent font-medium text-accent-foreground"
+                    : "border-border text-foreground/70 hover:border-foreground/40 hover:text-foreground"
+                )}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
 
-          {/* Age group toggle */}
-          <div className="flex gap-2 mb-8">
+          <div className="inline-flex self-start border border-border p-1" role="group" aria-label="Uzrast">
             {([
               { id: "decije" as AgeGroup, label: "Dečije" },
               { id: "odrasli" as AgeGroup, label: "Odrasli" },
@@ -211,111 +198,110 @@ export function SizeChart() {
               <button
                 key={group.id}
                 onClick={() => setAgeGroup(group.id)}
+                aria-pressed={ageGroup === group.id}
                 className={cn(
-                  "px-5 py-2 text-xs font-black uppercase tracking-widest transition-all",
+                  "h-9 px-5 text-sm transition-colors duration-200",
                   ageGroup === group.id
-                    ? "bg-[oklch(0.7_0.18_45)] text-black"
-                    : "bg-[oklch(0.12_0_0)] text-white/40 hover:text-white/70"
+                    ? "bg-foreground text-background font-medium"
+                    : "text-foreground/65 hover:text-foreground"
                 )}
-                style={{ fontFamily: "var(--font-barlow)" }}
               >
                 {group.label}
               </button>
             ))}
           </div>
+        </div>
 
-          {/* Table */}
-          <div className="overflow-x-auto scrollbar-none">
-            <table className="w-full min-w-[540px]">
-              <thead>
-                <tr>
-                  {currentData.headers.map((h, i) => (
-                    <th
-                      key={h}
-                      className={cn(
-                        "py-3 px-4 text-xs font-black uppercase tracking-widest text-[oklch(0.7_0.18_45)] border-b border-[oklch(0.22_0_0)]",
-                        i === 0 ? "text-left" : "text-center"
-                      )}
-                      style={{ fontFamily: "var(--font-barlow)" }}
-                    >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {currentData.rows.map((row, rowIdx) => (
-                  <tr
-                    key={row[0]}
+        <div className="overflow-x-auto scrollbar-none">
+          <table className="tabular w-full min-w-[540px] border-collapse">
+            <caption className="sr-only">
+              Tabela veličina: {sizeTabs.find((t) => t.id === activeTab)?.label},{" "}
+              {ageGroup === "decije" ? "dečije" : "odrasli"}
+            </caption>
+            <thead>
+              <tr>
+                {currentData.headers.map((h, i) => (
+                  <th
+                    key={h}
+                    scope="col"
                     className={cn(
-                      "transition-colors hover:bg-[oklch(0.12_0_0)]",
-                      rowIdx % 2 === 0 ? "bg-[oklch(0.08_0_0)]" : "bg-transparent"
+                      "label-mono border-b border-foreground/25 px-4 py-3 font-normal",
+                      i === 0 ? "text-left" : "text-right"
                     )}
                   >
-                    {row.map((cell, cellIdx) => (
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {currentData.rows.map((row) => (
+                <tr key={row[0]} className="transition-colors hover:bg-card">
+                  {row.map((cell, cellIdx) =>
+                    cellIdx === 0 ? (
+                      <th
+                        key={cellIdx}
+                        scope="row"
+                        className="display border-b border-border px-4 py-3 text-left text-2xl text-accent"
+                      >
+                        {cell}
+                      </th>
+                    ) : (
                       <td
                         key={cellIdx}
-                        className={cn(
-                          "py-3 px-4 text-sm border-b border-[oklch(0.15_0_0)]",
-                          cellIdx === 0
-                            ? "text-left font-black text-white"
-                            : "text-center text-white/60"
-                        )}
+                        className="border-b border-border px-4 py-3 text-right font-mono text-sm text-foreground/80"
                       >
                         {cell}
                       </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <p className="text-white/30 text-xs mt-4 italic">
-            * Mere su okvirne i mogu varirati ±2 cm. Za preciznije informacije kontaktirajte nas.
-          </p>
+                    )
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
-        {/* === Materials === */}
-        <div>
-          <div className="flex items-center gap-3 mb-8">
-            <Layers className="w-5 h-5 text-[oklch(0.7_0.18_45)]" />
-            <h3
-              className="text-xl font-black uppercase tracking-widest text-[oklch(0.7_0.18_45)]"
-              style={{ fontFamily: "var(--font-barlow)" }}
-            >
-              MATERIJALI
-            </h3>
-          </div>
+        <p className="mt-5 max-w-[60ch] text-sm text-muted-foreground">
+          Mere su okvirne i mogu varirati ±2 cm. Za preciznije informacije kontaktirajte nas.
+        </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {materials.map((mat) => (
-              <div
+        {/* === Materials === */}
+        <div id="materijali" className="mt-28 scroll-mt-24 md:mt-40">
+          <Reveal className="mb-10 md:mb-14">
+            <p className="label-mono mb-5 flex items-center gap-3">
+              <span aria-hidden className="h-px w-8 bg-accent" />
+              Šta koristimo
+            </p>
+            <h2 className="display text-[clamp(2.75rem,6vw,5.5rem)]">Materijali</h2>
+          </Reveal>
+
+          <ul className="border-t border-foreground/25">
+            {materials.map((mat, i) => (
+              <Reveal
+                as="li"
                 key={mat.name}
-                className="border border-[oklch(0.18_0_0)] bg-[oklch(0.08_0_0)] p-6 hover:border-[oklch(0.7_0.18_45/0.3)] transition-colors group"
+                delay={i * 50}
+                className="group grid gap-x-12 gap-y-4 border-b border-border py-7 transition-colors duration-200 hover:bg-card/60 md:grid-cols-12 md:px-4 md:py-8"
               >
-                <h4
-                  className="text-base font-black uppercase tracking-wider text-white mb-2 group-hover:text-[oklch(0.7_0.18_45)] transition-colors"
-                  style={{ fontFamily: "var(--font-barlow)" }}
-                >
+                <h3 className="text-xl font-semibold tracking-tight transition-colors group-hover:text-accent md:col-span-4">
                   {mat.name}
-                </h4>
-                <p className="text-white/50 text-sm leading-relaxed mb-4">
+                </h3>
+                <p className="max-w-[52ch] leading-relaxed text-muted-foreground md:col-span-5">
                   {mat.description}
                 </p>
-                <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-white/40">
-                  <span>
-                    <span className="text-white/60 font-medium">Sastav:</span>{" "}
-                    {mat.composition}
-                  </span>
-                  <span>
-                    <span className="text-white/60 font-medium">Gramatura:</span>{" "}
-                    {mat.weight}
-                  </span>
-                </div>
-              </div>
+                <dl className="tabular grid grid-cols-2 gap-x-6 text-sm md:col-span-3 md:grid-cols-1 md:gap-y-3">
+                  <div>
+                    <dt className="label-mono">Sastav</dt>
+                    <dd className="mt-1 text-foreground/85">{mat.composition}</dd>
+                  </div>
+                  <div>
+                    <dt className="label-mono">Gramatura</dt>
+                    <dd className="mt-1 text-foreground/85">{mat.weight}</dd>
+                  </div>
+                </dl>
+              </Reveal>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
     </section>
